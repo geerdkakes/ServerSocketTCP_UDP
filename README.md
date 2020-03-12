@@ -5,28 +5,29 @@ TCP and UDP servers and its clients
 
 ## Getting Started
 
-Get the code:
+Get and install the code:
 ```
 git clone https://github.com/geerdkakes/ServerSocketTCP_UDP.git
+cd ServerSocketTCP_UDP
+npm install
 ```
 
 Run the server on kubernetes using:
-
 ```
 kubectl apply -f deployment-udp-server.yaml
 ```
 
-Install the client using:
+Run the server directly on a machine using:
+```
+node udp_server.js
+```
 
-```
-npm install
-```
 
 Run the client using:
 ```
 node udp_client.js 127.0.0.1
 ```
-
+where you change the ip into the ip the server is running on.
 
 ### Prerequisites
 
