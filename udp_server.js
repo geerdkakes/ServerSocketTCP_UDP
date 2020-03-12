@@ -3,10 +3,15 @@
 
 const udp = require('dgram')
 const conf = require('./config/config')
+var increment = Math.floor( Math.random() * 9007199254740991);
 
-const {
-    log
-} = require('./util/loggerTool')
+function log(...args){
+    console.log(...args);
+}
+
+function getTime() {
+    return Date.now().valueOf();
+}
 
 // --------------------creating a udp server --------------------
 
@@ -21,29 +26,25 @@ server.on('error', (error) => {
 
 // emits on new datagram msg
 server.on('message', (msg,info) => {
-    log("udp_server", "info", msg.toString() + ` | Received ${msg.length} bytes from ${info.address}:${info.port}`)
+    let message = JSON.parse(msg.toString());
+    
 
-    let timestp = new Date()
-    const response = {
-        description: 'UDP PORT TEST BY RMS Math',
-        serverPort: conf.port,
-        timestamp: timestp.toJSON(),
-        received: {
-            message: msg.toString(),
-            fromIP: info.address,
-            fromPort: info.port
-        }
+    let timestp = getTime();
+    let delay = Number(timestp) - Number(message.timestamp);
+    let response = {
+        sequencenr: increment++,
+        response_to: message.sequencenr,
+        delay: delay,
+        timestamp: timestp,
     }
     const data = Buffer.from(JSON.stringify(response))
-
+    log(message.client, message.sequencenr, message.timestamp, delay, info.address);
     //sending msg
     server.send(data, info.port, info.address, (error, bytes) => {
         if(error){
-            log("udp_server", "error", error)
+            log("error sending data", error)
             client.close()
-        } else {
-            log("udp_server", "info", 'Data sent !!!')
-        }    
+        }  
     })
 })  // end server.on
 
@@ -62,7 +63,8 @@ server.on('listening', () => {
 
 //emits after the socket is closed using socket.close()
 server.on('close', () => {
-    log("udp_server", "info", 'Socket is closed !')
+    log("udp_server", "info", 'Socket is closed !');
+    process.exit(1);
 })
 
 server.bind(conf.port)
