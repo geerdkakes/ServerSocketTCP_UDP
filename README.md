@@ -25,9 +25,9 @@ node udp_server.js
 
 Run the client using:
 ```
-node udp_client.js 127.0.0.1
+node udp_client.js -h 127.0.0.1 -c clientname -p portnumber
 ```
-where you change the ip into the ip the server is running on.
+where you change the ip into the ip the server is running on. The portnumber can and clientname can be ommited. 
 
 ### Prerequisites
 
