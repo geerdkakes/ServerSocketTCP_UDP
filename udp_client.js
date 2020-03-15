@@ -10,7 +10,7 @@ const udp = require('dgram');
 var increment = Math.floor( Math.random() * 9007199254740991);
 const interval = 1000;
 const host = (typeof args.h === 'undefined' || args.h === null) ? "127.0.01" : args.h;
-const clientName = (typeof args.h === 'undefined' || args.c === null) ? "client_1" : args.c;
+const clientName = (typeof args.c === 'undefined' || args.c === null) ? "client_1" : args.c;
 const port = (typeof args.p === 'undefined' || args.p === null) ?  21000 : Number(args.p);
 
 // creating a client socket
